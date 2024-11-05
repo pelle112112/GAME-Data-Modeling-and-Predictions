@@ -80,6 +80,7 @@ mergedDf.boxplot('Age', 'Zone', ax=ax)
 plt.ylabel('Age')
 plt.xticks(rotation=90)
 plt.show()
+print(mergedDf["Event Type"].value_counts())
 
 # Label Encoding
 print(mergedDf["Zone"].unique())
@@ -113,6 +114,11 @@ mergedDf["Day of the week"] = mergedDf["Event Date"].dt.dayofweek
 # Lets create a new column called "Month" which will be a number from 1-12, where 1 is January and 12 is December
 mergedDf["Month"] = mergedDf["Event Date"].dt.month
 
+# Lets check what day of the week has the most participants
+print(mergedDf["Day of the week"].value_counts())
+print(mergedDf["Month"].value_counts())
+
+
 
 # Group by Event Id to get the number of people attending each event
 event_attendees = mergedDf.groupby('Event Id')['Player Id'].count().reset_index()
@@ -121,12 +127,12 @@ event_attendees = mergedDf.groupby('Event Id')['Player Id'].count().reset_index(
 mergedDf = pd.merge(mergedDf, event_attendees, on='Event Id', suffixes=('', '_attendees'))
 
 # Features (X) and target (y) for regression
-X = mergedDf.drop(['Player Id_attendees', 'Event Id', 'Event Date'], axis=1)  # features
+X = mergedDf[["Attending What", "Day of the week", "Event Type", "Zone", "Month"]]  # features
 y = mergedDf['Player Id_attendees']  # target variable (number of attendees)
 
 # Splitting the data into training and testing data
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X.values, y, test_size=0.2, random_state=0)
 
 
 # Initialize and train the model
