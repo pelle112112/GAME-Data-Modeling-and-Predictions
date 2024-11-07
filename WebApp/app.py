@@ -1,4 +1,10 @@
 import streamlit as st
-from predictions import showPredictions
+from RFModelpredictions import showRFPredictions
 
-showPredictions()
+page = st.sidebar.selectbox("Choose page", ("Random Forest Regressor", "linear Regression"))
+
+if page == "Random Forest Regressor":
+    showRFPredictions()
+elif page == "linear Regression":
+    st.write("Need to add stuff")
+

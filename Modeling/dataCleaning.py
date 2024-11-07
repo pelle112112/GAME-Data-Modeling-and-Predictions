@@ -82,6 +82,38 @@ plt.xticks(rotation=90)
 plt.show()
 print(mergedDf["Event Type"].value_counts())
 
+zone_municipality_codes = {
+    'Hørgården - København': 101,
+    'Mjølnerparken - København': 101,
+    'Den Grønne Trekant - Østerbro': 101,
+    'Other Zones': 461,  # Assuming no municipality code
+    'Søndermarken - Frederiksberg': 101,
+    'Sydbyen - Næstved': 370,
+    'GAME Streetmekka Viborg': 791,
+    'Rosenhøj/Viby - Aarhus (Street soccer)': 751,
+    'Gellerup/Brabrand - Aarhus': 751,
+    'Fri-Stedet - Aalborg': 851,
+    'Herlev': 163,
+    'Stengårdsvej - Esbjerg': 561,
+    'Munkevænget - Kolding': 621,
+    'Stjernen - Frederiksberg': 101,
+    'Kalbyris - Næstved': 370,
+    'Nordvest - Tagensbo': 101,
+    'Odense - Ejerslykke': 461,
+    'Platformen -Esbjerg': 561,
+    'Rosenhøj/Viby - Aarhus (GGZ)': 751,
+    'Skovparken-Kolding': 621,
+    'Nørrebro - Rådmandsgade Skole': 101,
+    'Frydenlund-Aarhus': 751,
+    'TK Ungdomsgård': 370,
+    'Aarhus Nord': 751,
+    'Spektrumparken - Esbjerg': 561,
+    'Aalborg Øst': 851,
+    'Stensbjergparken - Sønderborg': 540
+}
+
+mergedDf["Municipality Code"] = mergedDf["Zone"].map(zone_municipality_codes)
+
 # Label Encoding
 print(mergedDf["Zone"].unique())
 from sklearn.preprocessing import LabelEncoder
@@ -102,15 +134,13 @@ mergedDf["Zone"] = le_Zones.fit_transform(mergedDf["Zone"])
 # Lastly lets convert dates to dateformat
 mergedDf["Event Date"] = pd.to_datetime(mergedDf["Event Date"])
 
+
+
 print(mergedDf["Event Date"])
 print(mergedDf.dtypes)
 
 
-# Now its time to do some feature engineering
-
 # Lets create a new column called "Day of the week" which will be a number from 0-6, where 0 is Monday and 6 is Sunday
-
-
 mergedDf["Day of the week"] = mergedDf["Event Date"].dt.dayofweek
 
 # Lets create a new column called "Month" which will be a number from 1-12, where 1 is January and 12 is December
@@ -122,6 +152,7 @@ print(mergedDf["Month"].value_counts())
 
 # The event id we have is not unique, so we need to make a new id with the eventid and the event date
 newId = mergedDf["Event Id"].astype(str) + mergedDf["Event Date"].astype(str)
+print("types:", mergedDf.dtypes)
 
 mergedDf["Event Id"] = newId
 
@@ -131,78 +162,29 @@ mergedDf["Player Id_attendees"] = mergedDf.groupby("Event Id")["Player Id"].tran
 
 print(mergedDf["Player Id_attendees"].unique())
 
-# Features (X) and target (y) for regression
-X = mergedDf[["Attending What", "Day of the week", "Event Type", "Zone", "Month"]]  # features
-y = mergedDf['Player Id_attendees']  # target variable (number of attendees)
-
-# Splitting the data into training and testing data
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X.values, y, test_size=0.2, random_state=0)
+# Lets add municipality codes for each zone
 
 
-# Initialize and train the model
-from sklearn.linear_model import LinearRegression
-# Initialize and train the model
-regressor = LinearRegression()
-regressor.fit(X_train, y_train)
-
-# Make predictions
-y_pred = regressor.predict(X_test)
-
-
-# Evaluate the model
-from sklearn.metrics import mean_squared_error, r2_score
-print('Mean Squared Error:', mean_squared_error(y_test, y_pred))
-print('R^2:', r2_score(y_test, y_pred))
-
-
-
-from sklearn.ensemble import RandomForestRegressor
-
-rf_model = RandomForestRegressor(n_estimators=100, random_state=7, max_depth=20)
-rf_model.fit(X_train, y_train)
-
-# Make predictions
-y_pred_rf = rf_model.predict(X_test)
-
-# Evaluate
-print('Random Forest Mean Squared Error:', mean_squared_error(y_test, y_pred_rf))
-print('Random Forest R^2:', r2_score(y_test, y_pred_rf))
-
-# Time to optimize the model
-from sklearn.model_selection import GridSearchCV
-
-param_grid = {
-    'n_estimators': [100, 200, 300],
-    'max_depth': [10, 20, 30]
-}
-
-grid_search = GridSearchCV(estimator=rf_model, param_grid=param_grid, cv=3, n_jobs=-1, verbose=3)
-grid_search.fit(X_train, y_train)
-
-print(grid_search.best_params_)
-print(grid_search.best_score_)
-print(grid_search.best_estimator_)
-print('Random Forest Mean Squared Error:', mean_squared_error(y_test, grid_search.predict(X_test)))
-print('Random Forest R^2:', r2_score(y_test, grid_search.predict(X_test)))
+# Lets check the final dataframe
+print(mergedDf.head())
+print(mergedDf["Zone"].unique())
 
 
 # Save the model and label encoders
 import pickle
 
 data = {
-    'model': rf_model,
+    'dataframe': mergedDf,
     'le_EventType': le_EventType,
     'le_attendingWhat': le_attendingWhat,
     'le_Gender': le_Gender,
     'le_Zones': le_Zones}
-with open('../Data/model.pkl', 'wb') as file:
+with open('../Data/EventData.pkl', 'wb') as file:
     pickle.dump(data, file)
     
-with open('../Data/model.pkl', 'rb') as file:
+with open('../Data/EventData.pkl', 'rb') as file:
     data = pickle.load(file)
     
-modelLoaded = data['model']
 le_EventTypeLoaded = data['le_EventType']
 le_attendingWhatLoaded = data['le_attendingWhat']
 le_GenderLoaded = data['le_Gender']
