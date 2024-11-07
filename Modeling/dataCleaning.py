@@ -109,6 +109,8 @@ print(mergedDf.dtypes)
 # Now its time to do some feature engineering
 
 # Lets create a new column called "Day of the week" which will be a number from 0-6, where 0 is Monday and 6 is Sunday
+
+
 mergedDf["Day of the week"] = mergedDf["Event Date"].dt.dayofweek
 
 # Lets create a new column called "Month" which will be a number from 1-12, where 1 is January and 12 is December
@@ -118,13 +120,16 @@ mergedDf["Month"] = mergedDf["Event Date"].dt.month
 print(mergedDf["Day of the week"].value_counts())
 print(mergedDf["Month"].value_counts())
 
+# The event id we have is not unique, so we need to make a new id with the eventid and the event date
+newId = mergedDf["Event Id"].astype(str) + mergedDf["Event Date"].astype(str)
+
+mergedDf["Event Id"] = newId
+
+# Now we can find the number of participants for each event
+mergedDf["Player Id_attendees"] = mergedDf.groupby("Event Id")["Player Id"].transform("count")
 
 
-# Group by Event Id to get the number of people attending each event
-event_attendees = mergedDf.groupby('Event Id')['Player Id'].count().reset_index()
-
-# Merge this count back into the original dataframe
-mergedDf = pd.merge(mergedDf, event_attendees, on='Event Id', suffixes=('', '_attendees'))
+print(mergedDf["Player Id_attendees"].unique())
 
 # Features (X) and target (y) for regression
 X = mergedDf[["Attending What", "Day of the week", "Event Type", "Zone", "Month"]]  # features
@@ -154,7 +159,7 @@ print('R^2:', r2_score(y_test, y_pred))
 
 from sklearn.ensemble import RandomForestRegressor
 
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_model = RandomForestRegressor(n_estimators=100, random_state=7, max_depth=20)
 rf_model.fit(X_train, y_train)
 
 # Make predictions
@@ -163,6 +168,24 @@ y_pred_rf = rf_model.predict(X_test)
 # Evaluate
 print('Random Forest Mean Squared Error:', mean_squared_error(y_test, y_pred_rf))
 print('Random Forest R^2:', r2_score(y_test, y_pred_rf))
+
+# Time to optimize the model
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [10, 20, 30]
+}
+
+grid_search = GridSearchCV(estimator=rf_model, param_grid=param_grid, cv=3, n_jobs=-1, verbose=3)
+grid_search.fit(X_train, y_train)
+
+print(grid_search.best_params_)
+print(grid_search.best_score_)
+print(grid_search.best_estimator_)
+print('Random Forest Mean Squared Error:', mean_squared_error(y_test, grid_search.predict(X_test)))
+print('Random Forest R^2:', r2_score(y_test, grid_search.predict(X_test)))
+
 
 # Save the model and label encoders
 import pickle

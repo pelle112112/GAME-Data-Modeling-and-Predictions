@@ -70,8 +70,29 @@ def showPredictions():
         'Stensbjergparken - Sønderborg')
     
     dayOfweeks = (
-        0,1,2,3,4,5,6
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday'
     )
+    def daySelection(day):
+        if day == "monday":
+            return 0
+        elif day == "tuesday":
+            return 1
+        elif day == "wednesday":
+            return 2
+        elif day == "thursday":
+            return 3
+        elif day == "friday":
+            return 4
+        elif day == "saturday":
+            return 5
+        elif day == "sunday":
+            return 6
   
     eventType = st.selectbox("Event Type", eventTypes)
     zone = st.selectbox("Zone", zones)
@@ -84,7 +105,7 @@ def showPredictions():
         eventType = le_EventTypeLoaded.transform([eventType])
         zone = le_ZonesLoaded.transform([zone])
         attendingWhatselection = le_attendingWhatLoaded.transform([attendingWhatselection])
-        dayOfweekselection = dayOfweekselection
+        dayOfweekselection = daySelection(dayOfweekselection)
         month = month
         prediction = modelLoaded.predict([[eventType[0], zone[0], attendingWhatselection[0], dayOfweekselection, month]])
         st.write(f"Predicted number of participants: {prediction[0]}")
