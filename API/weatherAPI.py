@@ -23,7 +23,7 @@ def getWeatherData(location, date):
     print("DATESTRING IS: ",dateString)
 
     try:
-        url = "https://dmigw.govcloud.dk/v2/climateData/collections/municipalityValue/items?api-key=e49d54d0-bd38-4612-8227-c270463007b8&municipalityId="+locationString+"&parameterId=mean_temp&datetime="+dateString+"&timeResolution=day"
+        url = "https://dmigw.govcloud.dk/v2/climateData/collections/municipalityValue/items?api-key="+api_key+"&municipalityId="+locationString+"&parameterId=mean_temp&datetime="+dateString+"&timeResolution=day"
         response = requests.get(url)
     
     except requests.exceptions.RequestException as e:
