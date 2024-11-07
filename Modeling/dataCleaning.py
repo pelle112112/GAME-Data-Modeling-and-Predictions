@@ -86,7 +86,7 @@ zone_municipality_codes = {
     'Hørgården - København': 101,
     'Mjølnerparken - København': 101,
     'Den Grønne Trekant - Østerbro': 101,
-    'Other Zones': 461,  # Assuming no municipality code
+    'Other Zones': 461,  #Used Odenese as the default municipality code
     'Søndermarken - Frederiksberg': 101,
     'Sydbyen - Næstved': 370,
     'GAME Streetmekka Viborg': 791,
@@ -113,6 +113,7 @@ zone_municipality_codes = {
 }
 
 mergedDf["Municipality Code"] = mergedDf["Zone"].map(zone_municipality_codes)
+
 
 # Label Encoding
 print(mergedDf["Zone"].unique())
@@ -162,7 +163,6 @@ mergedDf["Player Id_attendees"] = mergedDf.groupby("Event Id")["Player Id"].tran
 
 print(mergedDf["Player Id_attendees"].unique())
 
-# Lets add municipality codes for each zone
 
 
 # Lets check the final dataframe

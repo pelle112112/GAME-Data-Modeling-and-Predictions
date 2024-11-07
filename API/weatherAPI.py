@@ -19,8 +19,7 @@ def getWeatherData(location, date):
     locationString = str(location)
     locationString = "0" + locationString
     dateString = pd.to_datetime(date).strftime('%Y-%m-%d')
-    dateString = dateString + "T00:00:00Z/" + dateString + "T23:59:59Z"
-    print("DATESTRING IS: ",dateString)
+    dateString = dateString + "T17:00:00Z/" + dateString + "T23:59:59Z"
 
     try:
         url = "https://dmigw.govcloud.dk/v2/climateData/collections/municipalityValue/items?api-key="+api_key+"&municipalityId="+locationString+"&parameterId=mean_temp&datetime="+dateString+"&timeResolution=day"
@@ -29,9 +28,10 @@ def getWeatherData(location, date):
     except requests.exceptions.RequestException as e:
         print("Error: ", e)
     
-
+    # Insert the json responses into an array and save it to a file
     data = response.json()
-    saveWeatherData(data)
+    # Lets get the mean temperature for the event
+    #saveWeatherData(data)
     return data
 
 
@@ -49,5 +49,5 @@ weatherData = getWeatherData(location, date)
 
 print(weatherData)
 
-
-
+# Lets get the mean temperature for the event
+meanTemp = weatherData["features"][0]["properties"]["value"]
