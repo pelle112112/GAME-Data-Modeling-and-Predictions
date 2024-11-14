@@ -15,3 +15,17 @@ mergedDf = mergedDf.dropna()
 print(mergedDf["Event Date"].min())
 
 print(mergedDf.isna().sum())
+
+
+with open('../Data/EventData_Holiday.pkl', 'rb') as file:
+    data1 = pickle.load(file)
+
+holidayDF = data1
+
+
+# Find out what the average amount of attendees are
+print(mergedDf["Player Id_attendees"].mean())
+# Median
+print(mergedDf["Player Id_attendees"].median())
+# What should be base a successful event on?
+print(mergedDf["Player Id_attendees"].max())
