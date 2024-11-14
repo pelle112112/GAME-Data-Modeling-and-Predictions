@@ -12,14 +12,15 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 
 
-with open('../Data/EventData.pkl', 'rb') as file:
+with open('../Data/EventData_Temperature_MaxMean.pkl', 'rb') as file:
     data = pickle.load(file)
     
 
 mergedDf = data['dataframe']
+mergedDf = mergedDf.dropna()
 
 # Features (X) and target (y) for regression
-X = mergedDf[["Attending What", "Day of the week", "Event Type", "Zone", "Month"]]  # features
+X = mergedDf[["Day of the week", "Event Type", "Zone", "Month", "max_mean_temp"]]  # features
 y = mergedDf['Player Id_attendees']  # target variable (number of attendees)
 
 # Splitting the data into training and testing data
@@ -101,6 +102,17 @@ def decisionTreeRegressor():
     print('Decision Tree Mean Squared Error:', mean_squared_error(y_test, y_pred))
     print('Decision Tree R^2:', r2_score(y_test, y_pred))
     return dt_model
+
+
+# lets test which features are the most important
+def featureImportance():
+    rf_model = randomForrestRegressor()
+    feature_importances = pd.DataFrame(rf_model.feature_importances_,
+                                    index = X.columns,
+                                    columns=['importance']).sort_values('importance', ascending=False)
+    print(feature_importances)
+    
+featureImportance()
 
 linregressor = linRegression()
 rf_model = randomForrestRegressor()

@@ -22,13 +22,13 @@ from datetime import datetime, timedelta
 mergedDf["Temperature"] = None  # Initialize the column with None (or NaN)
 
 for i in range(len(mergedDf)):
-    # API Date (in UTC, with timezone info)
+    # API Date is always 1 day behind
     date = weatherdata[i]["features"][0]["properties"]["from"]
     print(f"Raw API Date: {date}")  # Debugging step
 
     # Split the date part and remove the time part
-    date = date.split("T")[0]  # Keep only the date part (YYYY-MM-DD)
-    date = date + " 00:00:00"  # Add the time for consistency (set to 00:00:00)
+    date = date.split("T")[0]  
+    date = date + " 00:00:00"  
 
     # Convert API date string to datetime
     api_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
@@ -52,6 +52,7 @@ for i in range(len(mergedDf)):
         # Extract temperature from the API response
         temp = weatherdata[i]["features"][0]["properties"]["value"]
         print(f"Temperature for {event_date}: {temp}")
+        temp = float(temp)
 
         # Update the temperature in the DataFrame at the corresponding index
         mergedDf.at[i, "Temperature"] = temp
@@ -72,6 +73,7 @@ for i in range(len(mergedDf)):
 print(mergedDf.head())
 
 # Save the updated DataFrame to a new pickle file
+mergedDf = mergedDf.dropna()
 data['dataframe'] = mergedDf
 with open('../Data/EventData_Temperature.pkl', 'wb') as file:
     pickle.dump(data, file)
