@@ -4,31 +4,30 @@ import numpy as np
 import pickle
 from keras import models
 
-
+# Load pre-trained data and model
 def model_load():
     with open('../Data/Neural.pkl', 'rb') as file:
         data = pickle.load(file)
+    # Assuming that the 'labels' file is available and contains label encoders
     with open('../Data/EventData.pkl', 'rb') as file2:
         labels = pickle.load(file2)
     return data, labels
 
+# Load the data and label encoders
 data, labels = model_load()
-        
-le_EventTypeLoaded = labels['le_EventType']
-le_attendingWhatLoaded = labels['le_attendingWhat']
-le_GenderLoaded = labels['le_Gender']
-le_ZonesLoaded = labels['le_Zones']
-
-    
 df = data['dataframe']
 scaler = data['scaler']
-labelencoder = data['labelencoder']
 model = models.load_model('../Data/NeuralModel.h5')
 
+# Extract label encoders
+le_EventTypeLoaded = labels['le_EventType']
+le_ZonesLoaded = labels['le_Zones']
+# If using other label encoders, make sure they're loaded similarly
+
+# Streamlit app function
 def neuralNetworksPredictions():
-    st.title("Predictions using Neural Networks")
-    st.write("""###Test123""")
-    
+    st.title("Neural Network Predictions")
+
     eventTypes = (
         'Street Football',
         'GAME Girl Zone',
@@ -38,15 +37,6 @@ def neuralNetworksPredictions():
         'Skate',
         'Street Basketball, Street Football')
     
-    attendingWhats = (
-        'No',
-        'Yes, Something else than sport',
-        'Yes, Sport')
-    
-    genders = (
-        'Others',
-        'Male',
-        'Female')
 
     zones = (
         'Hørgården - København',
@@ -77,54 +67,75 @@ def neuralNetworksPredictions():
         'Aalborg Øst',
         'Stensbjergparken - Sønderborg')
     
-    dayOfweeks = (
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday'
-    )
-    def daySelection(day):
-        if day == "monday":
-            return 0
-        elif day == "tuesday":
-            return 1
-        elif day == "wednesday":
-            return 2
-        elif day == "thursday":
-            return 3
-        elif day == "friday":
-            return 4
-        elif day == "saturday":
-            return 5
-        elif day == "sunday":
-            return 6
-        
+    zone_municipality_codes = {
+    'Hørgården - København': 101,
+    'Mjølnerparken - København': 101,
+    'Den Grønne Trekant - Østerbro': 101,
+    'Other Zones': 461,  #Used Odenese as the default municipality code
+    'Søndermarken - Frederiksberg': 101,
+    'Sydbyen - Næstved': 370,
+    'GAME Streetmekka Viborg': 791,
+    'Rosenhøj/Viby - Aarhus (Street soccer)': 751,
+    'Gellerup/Brabrand - Aarhus': 751,
+    'Fri-Stedet - Aalborg': 851,
+    'Herlev': 163,
+    'Stengårdsvej - Esbjerg': 561,
+    'Munkevænget - Kolding': 621,
+    'Stjernen - Frederiksberg': 101,
+    'Kalbyris - Næstved': 370,
+    'Nordvest - Tagensbo': 101,
+    'Odense - Ejerslykke': 461,
+    'Platformen -Esbjerg': 561,
+    'Rosenhøj/Viby - Aarhus (GGZ)': 751,
+    'Skovparken-Kolding': 621,
+    'Nørrebro - Rådmandsgade Skole': 101,
+    'Frydenlund-Aarhus': 751,
+    'TK Ungdomsgård': 370,
+    'Aarhus Nord': 751,
+    'Spektrumparken - Esbjerg': 561,
+    'Aalborg Øst': 851,
+    'Stensbjergparken - Sønderborg': 540
+    }
+
+    
+
+    dayOfweekselection = st.selectbox("Day of the week", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
     eventType = st.selectbox("Event Type", eventTypes)
     zone = st.selectbox("Zone", zones)
-    #attendingWhatselection = st.selectbox("Attending What", attendingWhats)
-    dayOfweekselection = st.selectbox("Day of the week", dayOfweeks)
+    zonename = zone
     month = st.slider("Month", 1, 12, 1)
     temperature = st.slider("Temperature", -10, 40, 20)
+    max_mean_temp = st.slider("Max Mean Temperature", -10, 40, 20)
     holiday = st.selectbox("Holiday", ["Yes", "No"])
-    
+    attendin = st.slider("Attendin", 0, 100, 50)
+
     ok = st.button("Predict")
+
     if ok:
-        zone = labelencoder["Zone"].transform([zone])
-        eventType = labelencoder["Event Type"].transform([eventType])
-        #attendingWhatselection = labelencoder["Attending What"].transform([attendingWhatselection])
-        #gender = labelencoder
-        dayOfweekselection = daySelection(dayOfweekselection)
-        month = month
-        temperature = temperature
+        # Preprocess input
+        dayOfweek = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4, 'Saturday': 5, 'Sunday': 6}[dayOfweekselection]
+        zone = le_ZonesLoaded.transform([zone])[0]
+        eventType = le_EventTypeLoaded.transform([eventType])[0]
         holiday = 1 if holiday == "Yes" else 0
-        
-        input_data = np.array([[zone, eventType, dayOfweekselection, month, temperature, holiday]])
+        municipalityCode = 461  # Default value
+        for zonename in zone_municipality_codes:
+            if zonename == zone:
+                municipalityCode = zone_municipality_codes[zonename]
+                break
+
+        input_data = np.array([[dayOfweek, eventType, zone, month, temperature, holiday, municipalityCode]])
+        input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, attendin]])
+
+        # Assuming additional features need to be filled
+        #additional_features = np.zeros((1, 12))  # Adjust this based on actual feature engineering
+        #input_data = np.hstack([input_data, additional_features])
+
+        # Standardize the input data
         input_data = scaler.transform(input_data)
+
+        # Make prediction
         prediction = model.predict(input_data)
-        st.write(prediction)
-            
-            
+        st.write(f"Predicted number of attendees: {int(prediction[0][0])}")
+
+# Call the function to make predictions
 neuralNetworksPredictions()
