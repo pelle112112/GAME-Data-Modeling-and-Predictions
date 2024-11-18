@@ -100,16 +100,20 @@ def showRFPredictions():
   
     eventType = st.selectbox("Event Type", eventTypes)
     zone = st.selectbox("Zone", zones)
-    attendingWhatselection = st.selectbox("Attending What", attendingWhats)
+    #attendingWhatselection = st.selectbox("Attending What", attendingWhats)
     dayOfweekselection = st.selectbox("Day of the week", dayOfweeks)
     month = st.slider("Month", 1, 12, 1)
+    temperature = st.slider("Temperature", -10, 40, 20)
+    holiday = st.selectbox("Holiday", ["Yes", "No"])
     
     ok = st.button("Predict")
     if ok:
         eventType = le_EventTypeLoaded.transform([eventType])
         zone = le_ZonesLoaded.transform([zone])
-        attendingWhatselection = le_attendingWhatLoaded.transform([attendingWhatselection])
+        #attendingWhatselection = le_attendingWhatLoaded.transform([attendingWhatselection])
         dayOfweekselection = daySelection(dayOfweekselection)
         month = month
-        prediction = rfRegression.predict([[eventType[0], zone[0], attendingWhatselection[0], dayOfweekselection, month]])
+        temperature = temperature
+        holiday = 1 if holiday == "Yes" else 0
+        prediction = rfRegression.predict([[eventType[0], zone[0], dayOfweekselection, month, temperature, holiday]])
         st.write(f"Predicted number of participants: {prediction[0]}")

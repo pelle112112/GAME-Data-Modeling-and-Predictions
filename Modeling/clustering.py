@@ -26,8 +26,21 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
 
+# Normalizing the data
+
+from sklearn.preprocessing import StandardScaler
+def normalize(X_train, X_test):
+    sc = StandardScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
+    return X_train, X_test
+
+X_train, X_test = normalize(X_train, X_test)
+
+
+
 def kMeans():
-    kmeans = KMeans(n_clusters=3, random_state=7)
+    kmeans = KMeans(n_clusters=5, random_state=7)
     kmeans.fit(X_train)
     
     # Make predictions
@@ -38,7 +51,7 @@ def kMeans():
     return kmeans
 
 def agglomerativeClustering():
-    agg = AgglomerativeClustering(n_clusters=3)
+    agg = AgglomerativeClustering(n_clusters=5)
     agg.fit(X_train)
     
     # Make predictions
