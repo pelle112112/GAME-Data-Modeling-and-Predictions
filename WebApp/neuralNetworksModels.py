@@ -118,10 +118,7 @@ def neuralNetworksPredictions():
         eventType = le_EventTypeLoaded.transform([eventType])[0]
         holiday = 1 if holiday == "Yes" else 0
         municipalityCode = 461  # Default value
-        for zonename in zone_municipality_codes:
-            if zonename == zone:
-                municipalityCode = zone_municipality_codes[zonename]
-                break
+        municipalityCode = zone_municipality_codes.get(zonename, 461)
 
         input_data = np.array([[dayOfweek, eventType, zone, month, temperature, holiday, municipalityCode]])
         input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, attendin]])
@@ -135,6 +132,7 @@ def neuralNetworksPredictions():
 
         # Make prediction
         prediction = model.predict(input_data)
+        st.write("Municipality Code: ", municipalityCode)
         st.write(f"Predicted number of attendees: {int(prediction[0][0])}")
 
 # Call the function to make predictions
