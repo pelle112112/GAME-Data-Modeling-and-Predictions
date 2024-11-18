@@ -43,7 +43,7 @@ mergedDf['Zone Id'] = labelencoder.fit_transform(mergedDf['Zone Id'])
 
 # Drop columns that won't be used for the regression model
 mergedDf.drop(
-    ['Event Id', 'Gender_y', 'Has Consent'],
+    ['Event Id', 'Gender_y', 'Has Consent', 'Age_x', 'Gender_x', 'Age_y', 'Attending', 'Attending What_y', 'Attending What_x', 'Last Attendance', 'Country', 'Player Id', 'Event Date', 'Birthday Year', 'Zone Id'],
     axis=1, inplace=True
 )
 
@@ -52,7 +52,7 @@ print(mergedDf.info())
 
 # Features (X) and target (y) for regression
 # Select only numeric columns
-X = mergedDf.select_dtypes(include=[np.number]).drop('Player Id_attendees', axis=1).to_numpy()  # Convert to NumPy array
+X = mergedDf.select_dtypes(include=[np.number]).drop(['Player Id_attendees'], axis=1).to_numpy()  # Convert to NumPy array
 y = mergedDf['Player Id_attendees'].to_numpy()  # Convert to NumPy array
 
 # Check for NaN or infinite values in numeric columns only
@@ -120,7 +120,7 @@ def optimizedTensorFlowModel():
 model = optimizedTensorFlowModel()
 
 
-# Save the model and label encoders
+# Save the model and label encoders)
 
 data = {
     'scaler': scaler,

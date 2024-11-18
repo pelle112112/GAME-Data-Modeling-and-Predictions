@@ -29,3 +29,13 @@ print(mergedDf["Player Id_attendees"].mean())
 print(mergedDf["Player Id_attendees"].median())
 # What should be base a successful event on?
 print(mergedDf["Player Id_attendees"].max())
+
+
+with open('../Data/Neural.pkl', 'rb') as file:
+    data2 = pickle.load(file)
+    
+neuralDF = data2['dataframe']
+
+print(neuralDF.head())
+print(neuralDF.columns)
+print(neuralDF.dtypes)
