@@ -1,17 +1,15 @@
 import streamlit as st
-from RFModelpredictions import showRFPredictions
-from ClassificationModels import showClassificationPredictions
-from neuralNetworksModels import neuralNetworksPredictions
+import os
+from st_pages import add_page_title, get_nav_from_toml
 
-page = st.sidebar.selectbox("Predictions", ("Random Forest Regressor", "linear Regression", "Random Forest Classifier", "Neural Networks"))
 
-if page == "Random Forest Regressor":
-    showRFPredictions()
-elif page == "linear Regression":
-    st.write("Need to add stuff")
+st.set_page_config(layout= "wide")
 
-elif page == "Random Forest Classifier":
-    showClassificationPredictions()
+nav = get_nav_from_toml("../streamlitapp/pages_sections.toml")
 
-elif page == "Neural Networks":
-    neuralNetworksPredictions()
+pg = st.navigation(nav)
+
+
+add_page_title(pg)
+
+pg.run()
