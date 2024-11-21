@@ -25,7 +25,8 @@ def loadWeatherData(date, municipalityId):
         "date": date,
         "municipalityId": municipalityId,
         "mean_temp": None,
-        "mean_daily_max_temp": None
+        "mean_daily_max_temp": None,
+        "rain": None
     }
     
     # Open the file corresponding to the given date
@@ -47,6 +48,10 @@ def loadWeatherData(date, municipalityId):
                         temp = data["properties"].get("value")
                         
                         weather["mean_temp"] = temp
+
+                    elif(data["properties"].get("parameterId") == "acc_precip_past24h"):
+                        rain = data["properties"].get("value")
+                        weather["rain"] = rain
                         
             except json.JSONDecodeError as e:
                 # Handle any malformed JSON lines by printing an error message

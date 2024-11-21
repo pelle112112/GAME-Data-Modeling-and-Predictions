@@ -12,7 +12,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 
 
-with open('../Data/EventData_Holiday.pkl', 'rb') as file:
+with open('../Data/rain2.pkl', 'rb') as file:
     data = pickle.load(file)
     
 
@@ -20,7 +20,7 @@ mergedDf = data['dataframe']
 mergedDf = mergedDf.dropna()
 
 # Features (X) and target (y) for regression
-X = mergedDf[["Day of the week", "Event Type", "Zone", "Month", "max_mean_temp", "Holiday"]]  # features
+X = mergedDf[["Day of the week", "Event Type", "Zone", "Month", "max_mean_temp", "Holiday", "rain"]]  # features
 y = mergedDf['Player Id_attendees']  # target variable (number of attendees)
 
 # Splitting the data into training and testing data

@@ -97,6 +97,22 @@ def neuralNetworksPredictions():
     'Stensbjergparken - Sønderborg': 540
     }
 
+    # Lets create an array of month objects which holds the min and max temperature for each month
+    month_temps = [
+        (-31, 13, 2),  # January
+        (-29, 16, 3),  # February
+        (-27, 23, 5),  # March
+        (-19, 29, 10),  # April
+        (-8, 33, 16),  # May
+        (-4, 36, 20),  # June
+        (-1, 36, 20),  # July
+        (-2, 35, 20),  # August
+        (-6, 33, 20),  # September
+        (-12, 27, 13),  # October
+        (-22, 19, 8),  # November
+        (-26, 15, 4)  # December
+    ]
+
     
 
     dayOfweekselection = st.selectbox("Day of the week", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
@@ -104,8 +120,8 @@ def neuralNetworksPredictions():
     zone = st.selectbox("Zone", zones)
     zonename = zone
     month = st.slider("Month", 1, 12, 1)
-    temperature = st.slider("Temperature", -10, 40, 20)
-    max_mean_temp = st.slider("Max Mean Temperature", -10, 40, 20)
+    temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
+    max_mean_temp = st.slider("Max Mean Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     holiday = st.selectbox("Holiday", ["Yes", "No"])
     attendin = st.slider("Attendin", 0, 100, 50)
 

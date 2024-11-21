@@ -1,4 +1,16 @@
 [[pages]]
+name = "Data Exploration"
+is_section = true
+icon = "🏠"
+
+
+[[pages]]
+path = "../WebApp/Exploration.py"
+name = "Exploration of Event Data"
+icon = "🎈️"
+
+
+[[pages]]
 name = "Regression and Classification"
 icon = "🎈️"
 is_section = true

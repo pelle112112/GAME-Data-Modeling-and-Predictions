@@ -81,6 +81,21 @@ dayOfweeks = (
     'saturday',
     'sunday'
 )
+month_temps = [
+        (-31, 13, 2),  # January
+        (-29, 16, 3),  # February
+        (-27, 23, 5),  # March
+        (-19, 29, 10),  # April
+        (-8, 33, 16),  # May
+        (-4, 36, 20),  # June
+        (-1, 36, 20),  # July
+        (-2, 35, 20),  # August
+        (-6, 33, 20),  # September
+        (-12, 27, 13),  # October
+        (-22, 19, 8),  # November
+        (-26, 15, 4)  # December
+    ]
+
 def daySelection(day):
     if day == "monday":
         return 0
@@ -101,7 +116,7 @@ zone = st.selectbox("Zone", zones)
 #attendingWhatselection = st.selectbox("Attending What", attendingWhats)
 dayOfweekselection = st.selectbox("Day of the week", dayOfweeks)
 month = st.slider("Month", 1, 12, 1)
-temperature = st.slider("Temperature", -10, 40, 20)
+temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
 holiday = st.selectbox("Holiday", ["Yes", "No"])
 
 ok = st.button("Predict")

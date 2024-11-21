@@ -12,7 +12,7 @@ from keras import callbacks
 # Load player data
 playerData = pd.read_excel('../Data/players2024-11-18 08-34-42.xlsx')
 
-with open('../Data/EventData_Holiday.pkl', 'rb') as file:
+with open('../Data/rain2.pkl', 'rb') as file:
     data = pickle.load(file)
 
 eventDF = data['dataframe']
