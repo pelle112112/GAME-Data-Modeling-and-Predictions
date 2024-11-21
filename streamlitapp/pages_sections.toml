@@ -1,0 +1,25 @@
+[[pages]]
+name = "Regression and Classification"
+icon = "🎈️"
+is_section = true
+
+[[pages]]
+path = "../WebApp/ClassificationModels.py"
+name = "Classification"
+icon = "🏠"
+
+[[pages]]
+path = "../WebApp/RFModelpredictions.py"
+name = "Regression"
+icon = ":books:"
+
+[[pages]]
+name = "Clustering and Neural Networks"
+icon = "🎈️"
+is_section = true
+
+# Pages after an `is_section = true` will be indented
+[[pages]]
+path = "../WebApp/neuralNetworksModels.py" 
+name = "Neural Networks"
+icon = "💪"
