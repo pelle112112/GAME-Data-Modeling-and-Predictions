@@ -20,6 +20,9 @@ print(highestTemp)
 # Change none values to 0
 rain["rain"] = rain["rain"].fillna(0)
 print(rain.isnull().sum())
+print(rain.head())
+print(rain["rain"].value_counts())
+
 
 # Save the model and label encoders
 data = {

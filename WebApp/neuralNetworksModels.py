@@ -18,6 +18,8 @@ data, labels = model_load()
 df = data['dataframe']
 scaler = data['scaler']
 model = models.load_model('../Data/NeuralModel.h5')
+model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mean_absolute_error'])
+
 
 # Extract label encoders
 le_EventTypeLoaded = labels['le_EventType']
@@ -115,29 +117,48 @@ def neuralNetworksPredictions():
 
     
 
-    dayOfweekselection = st.selectbox("Day of the week", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+    selectDateOrNot = st.checkbox("Select Date")
+    if(selectDateOrNot):
+        date = st.date_input("Date")
+        dayOfweekselection = 0
+        updatedDay = date.weekday()
+        month = date.month
+        st.write("Day of the week: ", updatedDay)
+        st.write("Month: ", month)
+        st.write("Date: ", date)
+    else:
+        st.write("Date: Not Selected")
+        dayOfweekselection = st.selectbox("Day of the week", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+        month = st.slider("Month", 1, 12, 1)
+    
     eventType = st.selectbox("Event Type", eventTypes)
     zone = st.selectbox("Zone", zones)
     zonename = zone
-    month = st.slider("Month", 1, 12, 1)
+   
     temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     max_mean_temp = st.slider("Max Mean Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     holiday = st.selectbox("Holiday", ["Yes", "No"])
-    attendin = st.slider("Attendin", 0, 100, 50)
+    attendin = st.slider("Attendin", 0, 5, 3)
+    rain = st.slider("Rain", 0, 3, 0)
+    
 
     ok = st.button("Predict")
 
     if ok:
         # Preprocess input
-        dayOfweek = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4, 'Saturday': 5, 'Sunday': 6}[dayOfweekselection]
+        if(dayOfweekselection == 0):
+            dayOfweek = updatedDay
+        else:
+            dayOfweek = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4, 'Saturday': 5, 'Sunday': 6}[dayOfweekselection]
         zone = le_ZonesLoaded.transform([zone])[0]
         eventType = le_EventTypeLoaded.transform([eventType])[0]
         holiday = 1 if holiday == "Yes" else 0
         municipalityCode = 461  # Default value
         municipalityCode = zone_municipality_codes.get(zonename, 461)
+        rainValue = rain
 
         input_data = np.array([[dayOfweek, eventType, zone, month, temperature, holiday, municipalityCode]])
-        input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, attendin]])
+        input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, attendin, rainValue]])
 
         # Assuming additional features need to be filled
         #additional_features = np.zeros((1, 12))  # Adjust this based on actual feature engineering
