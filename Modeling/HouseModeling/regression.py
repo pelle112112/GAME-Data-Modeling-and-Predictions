@@ -71,7 +71,7 @@ import pandas as pd
 mergedDf['date'] = pd.to_datetime(mergedDf['timestamp']).dt.date
 mergedDf['Attendances'] = mergedDf.groupby(['usergroup_id', 'date'])['usergroup_id'].transform('count')
 mergedDf['membership_name'] = le_membership_name.fit_transform(mergedDf['membership_name'])
-X = mergedDf['']
+X = mergedDf[['max_mean_temp', 'rain', 'mean_temp', 'Holiday', 'membership_name']]
 y = mergedDf['Attendances']
 
 from sklearn.preprocessing import PolynomialFeatures
@@ -101,3 +101,55 @@ polynomial_regression_model, mse, r2 = polynomial_regression(X, y, degree=2)
 print(f'Mean Squared Error: {mse}')
 print(f'R-squared: {r2}')
 print(f'Polynomial regression model: {polynomial_regression_model}')
+
+from sklearn.ensemble import RandomForestRegressor
+
+def randomForrestRegressor (X, y):
+    # Split the data into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Initialize the model
+    rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+    
+    # Fit the model
+    rf_model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = rf_model.predict(X_test)
+    
+    # Evaluate the model
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    
+    return rf_model, mse, r2
+
+rf_model, mse, r2 = randomForrestRegressor(X, y)
+
+print(f'Mean Squared Error: {mse}')
+print(f'R-squared: {r2}')
+print(f'Random Forest model: {rf_model}')
+
+# Feature importance
+importances = rf_model.feature_importances_
+feature_names = X.columns
+indices = np.argsort(importances)[::-1]
+
+# Plot the feature importances
+plt.figure(figsize=(10, 6))
+sns.barplot(x=importances[indices], y=feature_names[indices])
+plt.title('Feature Importances')
+plt.show()
+
+
+# Save the model, label encoders, and dataframes
+data = {
+    'model': rf_model,
+    'rf_model': rf_model,
+    'polynomial_regression_model': polynomial_regression_model,
+    'le_membership_name': le_membership_name,
+    'mergedDf': mergedDf
+}
+
+with open('../../Data/HouseData/regressionData.pkl', 'wb') as file:
+    pickle.dump(data, file)
+    

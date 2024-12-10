@@ -80,6 +80,7 @@ print(mergedDf.info())
 
 # Add municipality code to the dataframe
 counter = 0
+
 # dictionary to map usergroup_id to Municipality Code
 mapping = {
     4: 101,

@@ -152,13 +152,13 @@ def boxPlotAttendeesPerHouse():
 
     return fig
 
-'''
+
 plotAttendeesPerDayAndHour()
 plotAttendeesPerHourWeekday()
 averagePlotAttendeesPerHourWeekday()
 plotAttendeesPerHouse()
 boxPlotAttendeesPerHouse()
-'''
+
 # Lets calculate the correlation between the different columns
 # Label encode membership_name
 mergedDf['membership_name'] = le_membership_name.fit_transform(mergedDf['membership_name'])
@@ -369,3 +369,16 @@ correlation_matrix = calculateDeltaAndAnalyzeEffectWithLag(mergedDf, month_temps
 
 # Optionally print the result
 print(correlation_matrix)
+
+# Save the dataframe to a pickle file
+
+
+data = {
+    'dataframe': mergedDf,
+    'correlation_matrix': correlation_matrix
+}
+with open('../../Data/HouseData/finalMergedDf.pkl', 'wb') as file:
+    pickle.dump(data, file)
+    
+
+    

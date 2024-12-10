@@ -9,6 +9,10 @@ path = "../WebApp/Exploration.py"
 name = "Exploration of Event Data"
 icon = "🎈️"
 
+[[pages]]
+path = "../WebApp/HouseData/ExplorationHouse.py"
+name = "Exploration of House Data"
+icon = "🎈️"
 
 [[pages]]
 name = "Regression and Classification"
@@ -22,7 +26,7 @@ icon = "🏠"
 
 [[pages]]
 path = "../WebApp/RFModelpredictions.py"
-name = "Regression"
+name = "Regression (Event data)"
 icon = ":books:"
 
 [[pages]]
@@ -33,5 +37,10 @@ is_section = true
 # Pages after an `is_section = true` will be indented
 [[pages]]
 path = "../WebApp/neuralNetworksModels.py" 
-name = "Neural Networks"
+name = "Neural Networks (Event data)"
+icon = "💪"
+
+[[pages]]
+path = "../WebApp/HouseData/neuralNetworksHouse.py" 
+name = "Neural Networks (House data)"
 icon = "💪"

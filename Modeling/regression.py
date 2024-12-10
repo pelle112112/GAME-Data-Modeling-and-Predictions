@@ -122,7 +122,8 @@ dtRegressor = decisionTreeRegressor()
 
 modelToFile = {
     'rf_model' : rf_model,
-    'linRegression' : linregressor}
+    'linRegression' : linregressor,
+    'dataframe' : mergedDf}
 
 with open('../Data/regressionModels.pkl', 'wb') as file:
     pickle.dump(modelToFile, file)
