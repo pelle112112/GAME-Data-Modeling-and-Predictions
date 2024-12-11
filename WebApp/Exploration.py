@@ -35,12 +35,12 @@ st.pyplot(fig)
 
 st.write("""Lets see the distribution of the number of attendees""")
 # Load the saved picture of the distribution of the number of attendees
-image = plt.imread('../Data/pics/DistrubutionOfTheNumberOfAttendees.png')
+image = plt.imread('Data/pics/DistrubutionOfTheNumberOfAttendees.png')
 st.image(image, caption='Distribution of the number of attendees', width=1000)
 
-image2 = plt.imread('../Data/pics/pic2.png')
+image2 = plt.imread('Data/pics/pic2.png')
 st.image(image2, caption='Number of attendees per event type', width=1000)
 
 
-image3 = plt.imread('../Data/pics/pic3.png')
+image3 = plt.imread('Data/pics/pic3.png')
 st.image(image3, caption='Number of attendees per zone', width=1000)
