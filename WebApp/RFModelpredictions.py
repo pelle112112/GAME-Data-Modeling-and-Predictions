@@ -4,9 +4,9 @@ import numpy as np
 import pickle
 
 def model_load():
-    with open('../Data/model.pkl', 'rb') as file:
+    with open('Data/model.pkl', 'rb') as file:
         data = pickle.load(file)
-    with open('../Data/regressionModels.pkl', 'rb') as file2:
+    with open('Data/regressionModels.pkl', 'rb') as file2:
         regressionModels = pickle.load(file2)
     return data, regressionModels
 

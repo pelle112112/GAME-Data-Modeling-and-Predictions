@@ -6,10 +6,10 @@ from keras import models
 
 # Load pre-trained data and model
 def model_load():
-    with open('../Data/Neural.pkl', 'rb') as file:
+    with open('Data/Neural.pkl', 'rb') as file:
         data = pickle.load(file)
     # Assuming that the 'labels' file is available and contains label encoders
-    with open('../Data/EventData.pkl', 'rb') as file2:
+    with open('Data/EventData.pkl', 'rb') as file2:
         labels = pickle.load(file2)
     return data, labels
 
@@ -17,7 +17,7 @@ def model_load():
 data, labels = model_load()
 df = data['dataframe']
 scaler = data['scaler']
-model = models.load_model('../Data/NeuralModel.h5')
+model = models.load_model('Data/NeuralModel.h5')
 model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mean_absolute_error'])
 
 

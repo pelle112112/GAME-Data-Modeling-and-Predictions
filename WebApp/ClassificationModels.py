@@ -5,9 +5,9 @@ import pickle
 
 
 def model_load():
-    with open('../Data/model.pkl', 'rb') as file:
+    with open('Data/model.pkl', 'rb') as file:
         data = pickle.load(file)
-    with open('../Data/EventData_Attendance_Classification.pkl', 'rb') as file2:
+    with open('Data/EventData_Attendance_Classification.pkl', 'rb') as file2:
         classificationModels = pickle.load(file2)
     return data, classificationModels
 

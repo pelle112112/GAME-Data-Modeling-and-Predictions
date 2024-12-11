@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import seaborn as sns
 
-with open('../Data/dataExplorationData.pkl', 'rb') as file:
+with open('Data/dataExplorationData.pkl', 'rb') as file:
     data = pickle.load(file)
 
 le_EventTypeLoaded = data['le_EventType']

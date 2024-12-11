@@ -5,7 +5,7 @@ import pickle
 from keras import models
 
 # Load pre-trained data and model
-with open('../Data/HouseData/Neural.pkl', 'rb') as file:
+with open('Data/HouseData/Neural.pkl', 'rb') as file:
     data = pickle.load(file)
 
 # Load the data and label encoders

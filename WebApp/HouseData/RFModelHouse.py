@@ -6,7 +6,7 @@ import pickle
 
 
 
-with open ('../Data/HouseData/regressionData.pkl', 'rb') as file:
+with open ('Data/HouseData/regressionData.pkl', 'rb') as file:
     data = pickle.load(file)
     
     

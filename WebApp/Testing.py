@@ -1,7 +1,7 @@
 import pickle
 import pandas as pd
 
-with open ('../Data/rain.pkl', 'rb') as file:
+with open ('Data/rain.pkl', 'rb') as file:
     data = pickle.load(file)
 
 rain = data['dataframe']
@@ -27,5 +27,5 @@ print(rain["rain"].value_counts())
 # Save the model and label encoders
 data = {
     'dataframe': rain}
-with open('../Data/rain2.pkl', 'wb') as file:
+with open('Data/rain2.pkl', 'wb') as file:
     pickle.dump(data, file)

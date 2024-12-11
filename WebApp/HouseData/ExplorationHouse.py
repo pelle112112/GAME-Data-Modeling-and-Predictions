@@ -6,14 +6,14 @@ import streamlit as st
 import seaborn as sns
 
 
-image1 = plt.imread('../Data/HouseData/pics/fig4.png')
-image2 = plt.imread('../Data/HouseData/pics/fig5.png')
-image3 = plt.imread('../Data/HouseData/pics/fig6.png')
-image4 = plt.imread('../Data/HouseData/pics/fig7.png')
-image5 = plt.imread('../Data/HouseData/pics/fig8.png')
-image6 = plt.imread('../Data/HouseData/pics/fig1.png')
-image7 = plt.imread('../Data/HouseData/pics/fig2.png')
-image8 = plt.imread('../Data/HouseData/pics/fig3.png')
+image1 = plt.imread('Data/HouseData/pics/fig4.png')
+image2 = plt.imread('Data/HouseData/pics/fig5.png')
+image3 = plt.imread('Data/HouseData/pics/fig6.png')
+image4 = plt.imread('Data/HouseData/pics/fig7.png')
+image5 = plt.imread('Data/HouseData/pics/fig8.png')
+image6 = plt.imread('Data/HouseData/pics/fig1.png')
+image7 = plt.imread('Data/HouseData/pics/fig2.png')
+image8 = plt.imread('Data/HouseData/pics/fig3.png')
 
 st.title("House Data Exploration")
 st.write("""### Data Exploration""")
