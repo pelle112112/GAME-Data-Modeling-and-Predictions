@@ -1,0 +1,10 @@
+st-pages
+streamlit
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+pickle
+keras
+tensorflow
