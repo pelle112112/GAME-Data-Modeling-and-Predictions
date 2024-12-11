@@ -5,8 +5,11 @@ import os
 
 
 st.set_page_config(layout= "wide")
+current_dir = os.getcwd()
+st.write("Current working directory:", os.getcwd())
 
-toml_path = "pages_sections.toml"
+
+toml_path = os.path.join(current_dir, "WebApp", "pages_sections.toml")
 #nav = get_nav_from_toml("streamlitapp/pages_sections.toml")
 if not os.path.exists(toml_path):
     st.error("Navigation file not found")
