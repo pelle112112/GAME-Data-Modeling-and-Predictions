@@ -138,7 +138,6 @@ def neuralNetworksPredictions():
     temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     max_mean_temp = st.slider("Max Mean Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     holiday = st.selectbox("Holiday", ["Yes", "No"])
-    attendin = st.slider("Attendin", 0, 5, 3)
     rain = st.slider("Rain", 0, 3, 0)
     
 
@@ -157,8 +156,8 @@ def neuralNetworksPredictions():
         municipalityCode = zone_municipality_codes.get(zonename, 461)
         rainValue = rain
 
-        input_data = np.array([[dayOfweek, eventType, zone, month, temperature, holiday, municipalityCode]])
-        input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, attendin, rainValue]])
+        #input_data = np.array([[dayOfweek, eventType, zone, month, temperature, holiday, municipalityCode]])
+        input_data = np.array([[eventType, zone, municipalityCode, dayOfweek, month, temperature, max_mean_temp, holiday, rainValue]])
 
         # Assuming additional features need to be filled
         #additional_features = np.zeros((1, 12))  # Adjust this based on actual feature engineering

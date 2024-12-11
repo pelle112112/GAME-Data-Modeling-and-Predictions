@@ -48,3 +48,4 @@ print(weatherData)
 
 # Lets get the mean temperature for the event
 meanTemp = weatherData["features"][0]["properties"]["value"]
+

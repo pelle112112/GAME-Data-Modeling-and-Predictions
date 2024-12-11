@@ -43,7 +43,7 @@ mergedDf['Zone Id'] = labelencoder.fit_transform(mergedDf['Zone Id'])
 
 # Drop columns that won't be used for the regression model
 mergedDf.drop(
-    ['Event Id', 'Gender_y', 'Has Consent', 'Age_x', 'Gender_x', 'Age_y', 'Attending', 'Attending What_y', 'Attending What_x', 'Last Attendance', 'Country', 'Player Id', 'Event Date', 'Birthday Year', 'Zone Id'],
+    ['Event Id', 'Gender_y', 'Has Consent', 'Age_x', 'Gender_x', 'Age_y', 'Attending', 'Attending What_y', 'Attending What_x', 'Last Attendance', 'Country', 'Player Id', 'Event Date', 'Birthday Year', 'Zone Id', 'Attend In'],
     axis=1, inplace=True
 )
 

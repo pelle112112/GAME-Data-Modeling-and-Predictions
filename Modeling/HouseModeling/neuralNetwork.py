@@ -15,18 +15,15 @@ with open('../../Data/HouseData/regressionData.pkl', 'rb') as file:
     data = pickle.load(file)
     
 mergedDf = data['mergedDf']
-le_membership_name = data['le_membership_name']
 
 mergedDf['month'] = mergedDf['timestamp'].dt.month
 mergedDf['dayOfWeek'] = mergedDf['timestamp'].dt.dayofweek
 
-X = mergedDf[['max_mean_temp', 'rain', 'mean_temp', 'Holiday', 'membership_name', 'month', 'dayOfWeek']]
+X = mergedDf[['max_mean_temp', 'rain', 'mean_temp', 'Holiday', 'month', 'dayOfWeek']]
 y = mergedDf['Attendances']
 
 scaler = StandardScaler()
 X[['max_mean_temp', 'rain', 'mean_temp']] = scaler.fit_transform(X[['max_mean_temp', 'rain', 'mean_temp']])
-le_membership_name = LabelEncoder()
-X['membership_name'] = le_membership_name.fit_transform(X['membership_name'])
 
 
 
@@ -72,7 +69,6 @@ plt.show()
 
 data = {
     'model': model,
-    'le_membership_name': le_membership_name,
     'history': history,
     'scaler': scaler,
     'dataframe': mergedDf

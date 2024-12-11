@@ -21,12 +21,17 @@ is_section = true
 
 [[pages]]
 path = "../WebApp/ClassificationModels.py"
-name = "Classification"
+name = "Classification (Event data)"
 icon = "🏠"
 
 [[pages]]
 path = "../WebApp/RFModelpredictions.py"
 name = "Regression (Event data)"
+icon = ":books:"
+
+[[pages]]
+path = "../WebApp/HouseData/RFModelHouse.py"
+name = "Regression (House data)"
 icon = ":books:"
 
 [[pages]]

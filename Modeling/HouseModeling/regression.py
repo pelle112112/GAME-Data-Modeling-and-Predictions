@@ -62,6 +62,7 @@ r2 = r2_score(y_test, y_pred)
 print(f'Mean Squared Error: {mse}')
 print(f'R-squared: {r2}')
 
+print("Features we are using for the regression model: ", X.columns)
 
 
 import pandas as pd

@@ -1,25 +1,23 @@
-import streamlit as st
 import pandas as pd
 import numpy as np
+import streamlit as st
 import pickle
-from keras import models
 
-# Load pre-trained data and model
-with open('../Data/HouseData/Neural.pkl', 'rb') as file:
+
+
+
+with open ('../Data/HouseData/regressionData.pkl', 'rb') as file:
     data = pickle.load(file)
+    
+    
+mergedDf = data['mergedDf']
+rf_model = data['model']
+polynomial_reg = data['polynomial_regression_model']
 
-# Load the data and label encoders
-
-
-df = data['dataframe']
-model = data['model']
-scaler = data['scaler']
-
-# Streamlit app function
-def neuralNetworksPredictions():
-    st.title("Neural Network Predictions House Data")
-    st.write("### This is a neural network model that predicts the number of attendees in a given GAME House based on the input features")
-
+def regressionPredictions():
+    st.title('Regression Predictions on House Data')
+    st.write('This page is used to make predictions on the house data using regression models.')
+    
     municipalityCodesnew = {
         "København": 101,
         "Aalborg": 851,
@@ -43,9 +41,7 @@ def neuralNetworksPredictions():
         (-22, 19, 8),  # November
         (-26, 15, 4)  # December
     ]
-
     
-
     selectDateOrNot = st.checkbox("Select Date")
     if(selectDateOrNot):
         date = st.date_input("Date")
@@ -59,17 +55,18 @@ def neuralNetworksPredictions():
         st.write("Date: Not Selected")
         dayOfweekselection = st.selectbox("Day of the week", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
         month = st.slider("Month", 1, 12, 1)
+        
     
     # Select city and extract municipality code
     municipalityCodeSelection = st.selectbox("Municipality Code", list(municipalityCodesnew.keys()))
     municipalityCode = municipalityCodesnew[municipalityCodeSelection]
-   
     temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     max_mean_temp = st.slider("Max Mean Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
     holiday = st.selectbox("Holiday", ["Yes", "No"])
     rain = st.slider("Rain", 0, 3, 0)
-    
+    membership_name = st.slider("Membership Name", 1, 40, 20)
     ok = st.button("Predict")
+
 
     if ok:
         # Preprocess input
@@ -82,17 +79,15 @@ def neuralNetworksPredictions():
         municipalityCode = 101  # Default value
         municipalityCode = municipalityCodesnew[municipalityCodeSelection]
         rainValue = rain
-
-        input_data1 = np.array([[holiday, month, dayOfweek]])
-        input_data2 = scaler.fit_transform(np.array([[max_mean_temp, rainValue, temperature]]))
         
-        input_data = np.concatenate((input_data2, input_data1), axis=1)
-
+        input_data = np.array([[membership_name, max_mean_temp, rain, temperature, holiday]])
 
         # Make prediction
-        prediction = model.predict(input_data)
-        st.write("Municipality Code: ", municipalityCode)
-        st.write(f"Predicted number of attendees: {int(prediction[0][0])}")
+        prediction = rf_model.predict(input_data)
+        st.write(f"Prediction shape: {prediction.shape}")
 
-# Call the function to make predictions
-neuralNetworksPredictions()
+        st.write("Municipality Code: ", municipalityCode)
+        st.write(f"Predicted number of attendees: {int(prediction[0])}")        
+    
+
+regressionPredictions()

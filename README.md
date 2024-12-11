@@ -40,3 +40,7 @@ Add it into a file in this location "/API/weatherAPIkey.txt"
 Navigate to "/Webapp"
 
 Type into the terminal: "streamlit run app.py"
+
+## To update repo with large pkl files
+
+Type into terminal: ❯ git lfs migrate import --include="\*.pkl"
