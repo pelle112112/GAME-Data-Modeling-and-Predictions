@@ -19,6 +19,14 @@ scaler = data['scaler']
 def neuralNetworksPredictions():
     st.title("Neural Network Predictions House Data")
     st.write("### This is a neural network model that predicts the number of attendees in a given GAME House based on the input features")
+    
+    st.write("Model prediction accuracy and performance numbers:")
+    mse= 17383.38970995191
+    mae= 104.05304445266961
+    r2= 0.3895542025566101
+    st.write("Mean Squared Error: ", mse)
+    st.write("Mean Absolute Error: ", mae)
+    st.write("R^2 Score: ", r2)
 
     municipalityCodesnew = {
         "København": 101,

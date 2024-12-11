@@ -23,8 +23,6 @@ le_ZonesLoaded = data['le_Zones']
 
 
 st.title("Predictions using Random Forest Regressor")
-st.write("""###Test123""")
-
 eventTypes = (
     'Street Football',
     'GAME Girl Zone',

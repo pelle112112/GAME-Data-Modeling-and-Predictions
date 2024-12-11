@@ -29,6 +29,13 @@ le_ZonesLoaded = labels['le_Zones']
 # Streamlit app function
 def neuralNetworksPredictions():
     st.title("Neural Network Predictions")
+    mse= 51.756397
+    mae= 5.267958
+    r2= 0.5290873050689697
+    st.write("Model prediction accuracy and performance numbers:")
+    st.write("Mean Squared Error: ", mse)
+    st.write("Mean Absolute Error: ", mae)
+    st.write("R^2 Score: ", r2)
 
     eventTypes = (
         'Street Football',
@@ -171,5 +178,7 @@ def neuralNetworksPredictions():
         st.write("Municipality Code: ", municipalityCode)
         st.write(f"Predicted number of attendees: {int(prediction[0][0])}")
 
+
+        
 # Call the function to make predictions
 neuralNetworksPredictions()

@@ -145,7 +145,6 @@ plt.show()
 # Save the model, label encoders, and dataframes
 data = {
     'model': rf_model,
-    'rf_model': rf_model,
     'polynomial_regression_model': polynomial_regression_model,
     'le_membership_name': le_membership_name,
     'mergedDf': mergedDf
