@@ -8,27 +8,9 @@ pandas, numpy, pickle, json, matplotlib, seaborn, sklearn, streamlit, keras, ten
 
 ### First set up a virtual environment for the libraries
 
-### Next, install the libraries by running the following commands
+### Next, install the libraries 
 
-pip install pandas
-
-pip install numpy
-
-pip install pickle
-
-pip install matplotlib
-
-pip install seaborn
-
-pip install scikit-learn
-
-pip install streamlit
-
-pip install keras
-
-pip install tensorflow
-
-pip install st-pages
+pip install requirements.txt
 
 ### If you want to use the prediction with weatherdata, then you need to set up the API key
 
