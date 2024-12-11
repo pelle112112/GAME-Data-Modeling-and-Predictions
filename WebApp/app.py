@@ -6,7 +6,7 @@ import os
 
 st.set_page_config(layout= "wide")
 
-toml_path = "streamlitapp/pages_sections.toml"
+toml_path = "pages_sections.toml"
 #nav = get_nav_from_toml("streamlitapp/pages_sections.toml")
 if not os.path.exists(toml_path):
     st.error("Navigation file not found")
