@@ -116,6 +116,7 @@ dayOfweekselection = st.selectbox("Day of the week", dayOfweeks)
 month = st.slider("Month", 1, 12, 1)
 temperature = st.slider("Temperature", month_temps[month - 1][0], month_temps[month - 1][1], month_temps[month - 1][2])
 holiday = st.selectbox("Holiday", ["Yes", "No"])
+rain = st.slider("Rain", 0, 3, 0)
 
 ok = st.button("Predict")
 if ok:
@@ -125,6 +126,8 @@ if ok:
     dayOfweekselection = daySelection(dayOfweekselection)
     month = month
     temperature = temperature
+    rainselection = rain
     holiday = 1 if holiday == "Yes" else 0
-    prediction = rfRegression.predict([[eventType[0], zone[0], dayOfweekselection, month, temperature, holiday]])
+
+    prediction = rfRegression.predict([[dayOfweekselection, eventType[0], zone[0], month, temperature, holiday, rainselection]])
     st.write(f"Predicted number of participants: {prediction[0]}")
